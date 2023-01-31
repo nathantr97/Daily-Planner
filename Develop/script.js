@@ -2,8 +2,8 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 
-var hourBlock=[
-  [$("#hour-9")],
+var hourBlock= [
+  [$("#hour-09")],
   [$("#hour-10")],
   [$("#hour-11")],
   [$("#hour-12")],
@@ -12,26 +12,23 @@ var hourBlock=[
   [$("#hour-15")],
   [$("#hour-16")],
   [$("#hour-17")],
+  [$("#hour-18")],
 ];
 
-
-  // TODO: Add a listener for click events on the save button. This code should
+$(function () {
+    // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
   // function? How can DOM traversal be used to get the "hour-x" id of the
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
-
-$(function () {
-
  var saveBtn= $(".saveBtn");
  var containerDiv= $("#container");
 
  saveBtn.on("click", function() {
     var itemArray=[];
 
-
-    for (i=0; i<9; i++) {
+    for (i = 0; i < 9; i++) {
       var textInput= containerDiv
       .children()
       .eq(i)
@@ -43,30 +40,26 @@ $(function () {
       localStorage.setItem("savedText", JSON.stringify(itemArray));
       console.log(itemArray);
     }
-  
  });
-
-  //
   // TODO: Add code to apply the past, present, or future class to each time
   // block by comparing the id to the current hour. HINTS: How can the id
   // attribute of each time-block be used to conditionally add or remove the
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
   //
-
   function hourCheck() {
   var currentHour= dayjs().format("HH");
 
-  for (i=0; i< hourBlock.lengthl; i++) {
+  for (i=0; i< hourBlock.length; i++) {
     var blockHour= hourBlock[i][0];
 
     if (hourBlock[i][0][0].id == "hour-" + currentHour) {
-      blockHour.addClass("present");
-
-    } else if (hourBlock[i][0][0].id < "hour-" + currentHour) {
-               blockHour.addClass("past");
-    } else {
+      blockHour.addClass("present");}
+    
+      else if (hourBlock[i][0][0].id > "hour-" + currentHour) {
                blockHour.addClass("future");
+    } else {
+               blockHour.addClass("past");
       }
   }
 }
@@ -77,7 +70,7 @@ $(function () {
   // attribute of each time-block be used to do this?
   //
 
-  function saveInfo() {
+  function grabSaved() {
     var containerDiv= $("#container");
     var savedItems= JSON.parse(localStorage.getItem("savedtext"));
 
@@ -95,10 +88,10 @@ $(function () {
     }
   }
 
-  savedInfo();
+  grabSaved();
 
   // TODO: Add code to display the current date in the header of the page.
 setInterval(hourCheck, 1000);
-  var currentDate= dayjs().format("dddd,MMMM D, YYYY");
-  $("currentDay").text(currentDate);
+  var today =dayjs().format("dddd, MMMM D, YYYY h:mm:ss a");
+  $("#currentDay").text(today);
 });
